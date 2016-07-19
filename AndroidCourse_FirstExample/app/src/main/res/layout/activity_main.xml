@@ -20,7 +20,7 @@
     <ImageView
         android:layout_width="@dimen/marsmallow_width"
         android:layout_height="@dimen/marsmallow_height"
-        android:id="@+id/marshmallow_image"
+        android:id="@+id/mar"
         android:src="@drawable/marshmallow"
         android:layout_marginTop="50dp" />
 
