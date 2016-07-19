@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Venturus</string>
+    <string name="likeCount">%1$d likes</string>
+</resources>

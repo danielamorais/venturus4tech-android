@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingTop="30dp"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I Love Marshmallow"
+        android:textSize="30dp"
+        android:textColor="#b40f0f"
+        android:layout_marginBottom="10dp" />
+
+    <ImageView
+        android:layout_width="@dimen/marsmallow_width"
+        android:layout_height="@dimen/marsmallow_height"
+        android:src="@drawable/marshmallow"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Like"
+        android:layout_marginTop="60dp"
+        android:id="@+id/likeButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/likeCount"
+        android:id="@+id/countLikes"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp" />
+
+</LinearLayout>
