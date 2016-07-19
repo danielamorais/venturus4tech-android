@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,17 +24,6 @@ public class MainActivity extends AppCompatActivity {
         String stringResource = getResources().getString(R.string.likeCount, numberLikes);
         final TextView textLikes = (TextView) findViewById(R.id.countLikes);
         textLikes.setText(stringResource);
-
-        //update button on click
-        final Button likeButton = (Button) findViewById(R.id.likeButton);
-        likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                numberLikes += 1;
-                String stringResource = getResources().getString(R.string.likeCount, numberLikes);
-                textLikes.setText(stringResource);
-            }
-        });
 
         //change activity
         ImageView robotImageView = (ImageView) findViewById(R.id.marshmallow_image);
@@ -56,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt("num_likes", numberLikes);
         editor.apply();
+    }
+
+    public void likeCount(View view){
+        numberLikes += 1;
+        String stringResource = getResources().getString(R.string.likeCount, numberLikes);
+        final TextView textLikes = (TextView) findViewById(R.id.countLikes);
+        textLikes.setText(stringResource);
     }
 
 }
