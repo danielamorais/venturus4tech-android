@@ -16,7 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="I Love Marshmallow"
-        android:textSize="30dp"
+        android:id="@+id/loveMessage"
+        android:textSize="@dimen/text_size"
         android:textColor="#b40f0f"
         android:layout_marginTop="90dp" />
 

@@ -1,7 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- //This is normal version of dimens, values -> dimens.xml doesn't do it nothing -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="marsmallow_width">150dp</dimen>
     <dimen name="marsmallow_height">150dp</dimen>
+    <dimen name="text_size">30dp</dimen>
 </resources>
