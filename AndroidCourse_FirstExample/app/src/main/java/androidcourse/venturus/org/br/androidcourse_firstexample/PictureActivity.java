@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,8 +27,11 @@ public class PictureActivity extends AppCompatActivity {
         final TextView textLikes = (TextView) findViewById(R.id.numberLikes);
         textLikes.setText(stringResource);
 
+        //ImageView anotherRobot = (ImageView) findViewById()
+        //can't parse here 
         DownloadManager downloadManager = (DownloadManager)  getSystemService(DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://imgnzn-a.akamaized.net/2015/12/14/14173852787498.jpg"));
+        Uri address = Uri.parse("https://goo.gl/RnPVhk");
+        DownloadManager.Request request = new DownloadManager.Request(address);
         downloadId = downloadManager.enqueue(request);
 
     }
