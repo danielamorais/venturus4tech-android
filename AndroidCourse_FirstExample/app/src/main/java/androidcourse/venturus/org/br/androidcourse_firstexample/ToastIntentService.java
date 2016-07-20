@@ -3,6 +3,7 @@ package androidcourse.venturus.org.br.androidcourse_firstexample;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class ToastIntentService extends IntentService {
 
     private void showNotification(String message) {
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this).setContentTitle(message).setSmallIcon(R.mipmap.ic_launcher).setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+                new NotificationCompat.Builder(this).setContentTitle(message).setSmallIcon(R.mipmap.ic_launcher).setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
         notificationManager.notify(5556, builder.build());
     }
 }
