@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent pictureIntent = new Intent(MainActivity.this, PictureActivity.class);
-                pictureIntent.putExtra("hello", 18);
+                pictureIntent.putExtra("numberLikes", numberLikes);
                 MainActivity.this.startActivity(pictureIntent);
             }
         });
