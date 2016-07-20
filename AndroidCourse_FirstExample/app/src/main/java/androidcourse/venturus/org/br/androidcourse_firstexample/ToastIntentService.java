@@ -56,7 +56,7 @@ public class ToastIntentService extends IntentService {
 
     private void showNotification(String message) {
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this).setContentTitle(message).setSmallIcon(R.mipmap.ic_launcher);
+                new NotificationCompat.Builder(this).setContentTitle(message).setSmallIcon(R.mipmap.ic_launcher).setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         notificationManager.notify(5556, builder.build());
     }
 }

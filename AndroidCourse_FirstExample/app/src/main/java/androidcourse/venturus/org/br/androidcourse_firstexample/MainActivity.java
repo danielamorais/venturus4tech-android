@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         //change activity
         ImageView robotImageView = (ImageView) findViewById(R.id.marshmallow_image);
+
         robotImageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
