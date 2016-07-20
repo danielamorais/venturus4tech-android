@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(pictureIntent);
             }
         });
+
+        //send notification
+        TextView loveMessage = (TextView) findViewById(R.id.loveMessage);
+        loveMessage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("debug", "starting intentservice");
+                Intent notificationIntent = new Intent(MainActivity.this, ToastIntentService.class);
+                MainActivity.this.startService(notificationIntent);
+            }
+        });
+
 
     }
 

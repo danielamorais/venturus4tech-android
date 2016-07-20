@@ -18,6 +18,7 @@
         <activity android:name=".PictureActivity">
 
         </activity>
+        <service android:enabled="true" android:name=".ToastIntentService" />
     </application>
 
 </manifest>
