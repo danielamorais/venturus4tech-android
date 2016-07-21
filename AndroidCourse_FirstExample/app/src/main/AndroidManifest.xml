@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="androidcourse.venturus.org.br.androidcourse_firstexample" >
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,11 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PictureActivity">
-
+        <activity android:name=".PictureActivity" >
         </activity>
-        <!-- android:exported="false" Não permite que outros aplicativos acessem este service-->
-        <service android:enabled="true" android:name=".ToastIntentService" android:exported="false"/>
+        <!-- android:exported="false" Não permite que outros aplicativos acessem este service -->
+        <service
+            android:name=".ToastIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".DownloadCompleteReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
     </application>
 
 </manifest>
