@@ -19,7 +19,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
         if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)){
             long downId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
             if(downId == downloadId){
-                Toast toast = Toast.makeText(context, "Imagem baixada", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, R.string.image_download, Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
