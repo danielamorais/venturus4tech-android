@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp">
         <TextView
-            android:text="Temperatura"
+            android:text="@string/temperatura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
@@ -89,7 +89,7 @@
             <TextView
                 android:textColor="@color/colorPrimary"
                 android:textSize="50dp"
-                android:text="30ºC"
+                android:text="@string/temperaturaValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp" />
