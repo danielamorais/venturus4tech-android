@@ -13,6 +13,9 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
         this.downloadId = downloadId;
     }
 
+    public DownloadCompleteReceiver() {
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();

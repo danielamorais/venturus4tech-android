@@ -34,10 +34,11 @@
             textLikes.setText(stringResource);
 
             //request for permissions
-            checkPermissionAndDownload();
+            //checkPermissionAndDownload();
         }
 
         //works only at Android 6.0
+        /*
         private void checkPermissionAndDownload() {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -54,6 +55,7 @@
                     doDownload();
             }
         }
+        */
 
         private void doDownload() {
             DownloadManager downloadManager = (DownloadManager)  getSystemService(DOWNLOAD_SERVICE);
