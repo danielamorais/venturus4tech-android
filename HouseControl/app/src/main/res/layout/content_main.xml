@@ -20,6 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/background"
                 android:src="@drawable/bgon"
                 android:layout_above="@+id/divider"
                 android:scaleType="centerCrop"
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:id="@+id/iconLuz"
                 android:src="@drawable/icon_luz_on"
                 android:scaleType="fitCenter"
                 android:layout_width="wrap_content"
@@ -50,11 +52,13 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
                 <TextView
-                    android:text="LUZ STATUS"
+                    android:id="@+id/switchText"
+                    android:text="@string/switch_text_on"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp" />
                 <Switch
+                    android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="200dp" />

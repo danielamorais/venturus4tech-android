@@ -1,13 +1,14 @@
 package com.danielammorais.housecontrol;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +18,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Switch status = (Switch) findViewById(R.id.status);
+        status.setChecked(true);
+        status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ImageView background = (ImageView) findViewById(R.id.background);
+                ImageView icon = (ImageView) findViewById(R.id.iconLuz);
+                TextView switchText = (TextView) findViewById(R.id.switchText);
+
+                if(isChecked){
+                    switchText.setText(R.string.switch_text_on);
+                    background.setImageResource(R.drawable.bgon);
+                    icon.setImageResource(R.drawable.icon_luz_on);
+                } else {
+                    switchText.setText(R.string.switch_text_off);
+                    background.setImageResource(R.drawable.bgoff);
+                    icon.setImageResource(R.drawable.icon_luz_off);
+                }
+            }
+        });
     }
 
     @Override
