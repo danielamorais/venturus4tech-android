@@ -1,21 +1,29 @@
 package br.org.venturus.housecontrol;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttClientPersistence;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
@@ -23,16 +31,19 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    // Configurations
     private static final String TOPIC = "v4tech/vntpejr/iot";
-
     private String mBrokerURL;
     private String mBrokerPort;
 
@@ -44,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mCardBackground;
     private ImageView mLightBulb;
 
+    // MQTT
     private MqttClient mClient;
 
     @Override
@@ -66,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
         mLightSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Switch button = (Switch) view;
+                Switch led = (Switch) view;
                 if (mClient != null && mClient.isConnected()) {
                     try {
                         JSONObject json = new JSONObject();
-                        json.put("seta_led", button.isChecked() ? "ligado" : "desligado");
+                        json.put("seta_led", led.isChecked() ? "ligado" : "desligado");
                         mClient.publish(TOPIC, json.toString().getBytes(), 0, false);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -89,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
         mTempUpdate.setText("");
 
         updateBrokerInfo();
-        setupMqtt();
-        //connectMqtt();
     }
 
     private void setupMqtt() {
@@ -144,46 +154,36 @@ public class MainActivity extends AppCompatActivity {
                 public void deliveryComplete(IMqttDeliveryToken token) {
                 }
             });
-
         } catch (MqttException e) {
             Log.e(TAG, "Erro: " + e.toString());
             e.printStackTrace();
         }
     }
 
-    private void connectMqtt() {
-        // start connection to Broker
-        if (mClient != null && !mClient.isConnected()) {
-            try {
-                mClient.connect();
-                if (mClient.isConnected()) {
-                    mClient.subscribe(TOPIC);
-                    JSONObject json = new JSONObject();
-                    json.put("status", 0);
-                    mClient.publish(TOPIC, json.toString().getBytes(), 0, false);
-                    updateActionbarSubtitle(true);
-                    invalidateOptionsMenu();
-                }
-            } catch (MqttException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connectToServer();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disconnectFromServer();
+    }
+
+    private void connectToServer() {
+        if (mBrokerPort != null && !mBrokerURL.equals("")) {
+            if (mClient != null && !mClient.isConnected()) {
+                new ConnectTask().execute(mClient);
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.toast_config_broker, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void disconnectMqtt() {
-        // start connection to Broker
-        if (mClient != null && mClient.isConnected()) {
-            try {
-                mClient.disconnect();
-                updateActionbarSubtitle(false);
-                invalidateOptionsMenu();
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
+    private void disconnectFromServer() {
+        new DisconnectTask().execute(mClient);
     }
 
     @Override
@@ -195,12 +195,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_connect:
                 if (item.getTitle().equals(getResources().getString(R.string.settings_connect))) {
+                    connectToServer();
                     item.setTitle(R.string.settings_disconnect);
-                    connectMqtt();
                 } else {
+                    disconnectFromServer();
                     item.setTitle(R.string.settings_connect);
-                    disconnectMqtt();
                 }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -230,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mBrokerURL = sharedPreferences.getString(getResources().getString(R.string.pref_key_server), "");
         mBrokerPort = sharedPreferences.getString(getResources().getString(R.string.pref_key_port), "");
+
+        setupMqtt();
     }
 
     private void updateActionbarSubtitle(final boolean connected) {
@@ -283,5 +286,107 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private class ConnectTask extends AsyncTask<MqttClient, Void, Void> {
+
+        private ProgressDialog dialog;
+        private boolean isConnected = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setMessage("Connecting. Please wait...");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(MqttClient... params) {
+            MqttClient client = params[0];
+
+            if (client != null && !client.isConnected()) {
+                try {
+                    client.connect();
+                    if (client.isConnected()) {
+                        isConnected = true;
+                        client.subscribe(TOPIC);
+                        JSONObject json = new JSONObject();
+                        json.put("status", 0);
+                        mClient.publish(TOPIC, json.toString().getBytes(), 0, false);
+                    }
+                } catch (MqttException e) {
+                    Log.d(TAG, "Could not connect to server...");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
+            invalidateOptionsMenu();
+            updateActionbarSubtitle(isConnected);
+            if (!isConnected) {
+                Toast.makeText(MainActivity.this, "Could not connect to server", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+            invalidateOptionsMenu();
+        }
+    }
+
+    private class DisconnectTask extends AsyncTask<MqttClient, Void, Void> {
+
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setMessage("Disconnecting. Please wait...");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(MqttClient... params) {
+            MqttClient client = params[0];
+
+            if (client != null) {
+                try {
+                    client.disconnect();
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dialog.dismiss();
+            invalidateOptionsMenu();
+            updateActionbarSubtitle(false);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+            invalidateOptionsMenu();
+        }
     }
 }
