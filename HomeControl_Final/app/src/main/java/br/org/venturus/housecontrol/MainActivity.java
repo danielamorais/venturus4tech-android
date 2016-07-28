@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Configurations
-    private static final String TOPIC = "v4tech/vntpejr/iot";
+    private static final String TOPIC = "v4tech/danielamorais/iot";
     private String mBrokerURL;
     private String mBrokerPort;
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         String server = "tcp://" + mBrokerURL + ":" + mBrokerPort;
 
         try {
-            mClient = new MqttClient(server, "id_vntpejr", new MemoryPersistence());
+            mClient = new MqttClient(server, "id_danielamorais", new MemoryPersistence());
             mClient.setTimeToWait(10000);
             mClient.setCallback(new MqttCallback() {
                 @Override
