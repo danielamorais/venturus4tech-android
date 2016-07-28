@@ -46,13 +46,20 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setLogo(R.mipmap.launcher);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            updateActionBarSubtitle(false);
+        }
+    }
+
+    private void updateActionBarSubtitle(final boolean connected){
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setSubtitle(connected ? getString(R.string.status_conectado) : getString(R.string.status_desconectado));
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
