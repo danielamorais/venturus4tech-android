@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setIcon();
 
         Switch status = (Switch) findViewById(R.id.status);
         status.setChecked(true);
@@ -38,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setIcon() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setLogo(R.mipmap.launcher);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
